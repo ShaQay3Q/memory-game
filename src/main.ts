@@ -11,7 +11,7 @@ let memoryCards: number[] = [];
 for (let i=1; i<=numCards; i++) { memoryCards.push(i) };
 
 // shuffle the array
-memoryCards.sort(() => Math.random()-0.5 );
+// memoryCards.sort(() => Math.random()-0.5 );
 
 // fill board with cards
 for (let i of memoryCards) {
@@ -39,19 +39,31 @@ let firstCard: HTMLElement;
 let secondCard: HTMLElement;
 let showCounter = 0;    // counter for showing cards
 let isShowing = false;  // var for keeping track of showing cards
+let playerOne = document.getElementById("playerOne") as HTMLElement
+let playerTwo = document.getElementById("playerTwo") as HTMLElement
+playerOne.innerText = (`Player One: 0`);
+playerTwo.innerText = (`Player Two: 0`);
+let playerTurn = document.getElementById("playerTurn") as HTMLElement
+playerTurn.innerText = (`Player One's turn`);
+let isPlayerOneTurn: boolean = true;
+
+
 
 // Make card visible on click
 async function handleClick(id: number) {
-
-  //?? WHAT??
+  console.log("tom the cat", isPlayerOneTurn);
+  
   if (isShowing) { return }
   if (showCounter%2 === 0) {
     // first Card
     firstCard = document.getElementById(id.toString()) as HTMLElement;
+    fancyRotate(firstCard);
     firstCard.classList.toggle('hidden');
   } else {
     // second Card
-    secondCard = document.getElementById(id.toString()) as HTMLElement;
+    secondCard = document.getElementById(id.toString()) as HTMLElement;    
+    fancyFlip(secondCard)
+    // fancyFlip(parent)
     secondCard.classList.toggle('hidden');
     isShowing = true;
     // 1
@@ -60,9 +72,15 @@ async function handleClick(id: number) {
     // await new Promise(f => setTimeout(f, 2000));
     // can be used
     checkMatch();
+    // isPlayerOneTurn = !isPlayerOneTurn 
+    playerTurn.innerText = isPlayerOneTurn ? `Player One's turn`:`Player Two's turn`;
+    console.log("player name", playerTurn.innerText);
+    
     isShowing = false;
   }
-  showCounter++;
+  showCounter++;  
+  console.log("end of handleClick", isPlayerOneTurn);
+  
 }
 
 // 1
@@ -78,11 +96,42 @@ function checkMatch() {
   if (Math.abs(firstID - secondID) === 12){
     firstCard.parentElement!.innerHTML = `<img src="src/imgs/check.svg" />`
     secondCard.parentElement!.innerHTML = `<img src="src/imgs/check.svg" />`
+
   } else {
     firstCard.classList.toggle('hidden');
     secondCard.classList.toggle('hidden');
-
+    isPlayerOneTurn = !isPlayerOneTurn
   }
+
   // if so: replace cards with a CHECK
   // else: hide cards again
+}
+
+async function fancyRotate(card: HTMLElement){
+  for (let i = 0; i <= 360; i+=6){
+    card.parentElement!.style.rotate = `${i}deg`;
+    await delay(5)
+  }
+}
+
+async function fancyFlip(card: HTMLElement){
+  for (let i = 70; i >= 0; i-=4){
+    card.parentElement!.style.width = `${i}px`;
+    card.style.width = `${i}px`;
+    await delay(10)
+  }
+  for (let i = 0; i <= 70; i+=4){
+    card.parentElement!.style.width = `${i}px`;
+    card.style.width = `${i}px`;
+    await delay(10)
+}
+}
+
+
+
+
+let PlayerTurn = document.querySelector("#turn") as HTMLElement;
+
+function whichPlayerTurn(){
+  let count: number
 }
