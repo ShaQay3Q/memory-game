@@ -41,19 +41,19 @@ let showCounter = 0;    // counter for showing cards
 let isShowing = false;  // var for keeping track of showing cards
 let playerOne = document.getElementById("playerOne") as HTMLElement
 let playerTwo = document.getElementById("playerTwo") as HTMLElement
-let playerOneScore: number = 0;
-let playerTwoScore: number = 0;
+let playerOneScore = 0;
+let playerTwoScore = 0;
 playerOne.innerText = (`Player One: ${playerOneScore}`);
 playerTwo.innerText = (`Player Two: ${playerTwoScore}`);
 let playerTurn = document.getElementById("playerTurn") as HTMLElement
 playerTurn.innerText = (`Player One's turn`);
-let isPlayerOneTurn: boolean = true;
+let isPlayerOneTurn = true; // inferring by te value
+let correctAnswerCount = 0;
 
 
 
 // Make card visible on click
 async function handleClick(id: number) {
-  console.log("tom the cat", isPlayerOneTurn);
   
   if (isShowing) { return }
   if (showCounter%2 === 0) {
@@ -68,20 +68,23 @@ async function handleClick(id: number) {
     // fancyFlip(parent)
     secondCard.classList.toggle('hidden');
     isShowing = true;
+
     // 1
-    await delay(1500);
+    await delay(100);
+
     // instead of 1
     // await new Promise(f => setTimeout(f, 2000));
     // can be used
     checkMatch();
+
     // isPlayerOneTurn = !isPlayerOneTurn 
     playerTurn.innerText = isPlayerOneTurn ? `Player One's turn`:`Player Two's turn`;
-    console.log("player name", playerTurn.innerText);
     
     isShowing = false;
   }
-  showCounter++;  
-  console.log("end of handleClick", isPlayerOneTurn);
+
+  showCounter++; 
+
   playerOne.innerText = (`Player One: ${playerOneScore}`);
   playerTwo.innerText = (`Player Two: ${playerTwoScore}`);
   
@@ -97,10 +100,15 @@ function checkMatch() {
   // check if firstCard and secondCard are a match
   let firstID = Number(firstCard.id);
   let secondID = Number(secondCard.id);
+
   if (Math.abs(firstID - secondID) === 12){
     firstCard.parentElement!.innerHTML = `<img src="src/imgs/check.svg" />`
     secondCard.parentElement!.innerHTML = `<img src="src/imgs/check.svg" />`
     isPlayerOneTurn ? playerOneScore++ : playerTwoScore++;
+    correctAnswerCount++
+    if (isTheMatchFinished()){
+      alert(winner(playerOneScore, playerTwoScore))
+    }
 
   } else {
     firstCard.classList.toggle('hidden');
@@ -125,18 +133,25 @@ async function fancyFlip(card: HTMLElement){
     card.style.width = `${i}px`;
     await delay(10)
   }
+
   for (let i = 0; i <= 70; i+=4){
     card.parentElement!.style.width = `${i}px`;
     card.style.width = `${i}px`;
     await delay(10)
+  }
 }
+
+function isTheMatchFinished(): boolean{
+  return playerOneScore + playerTwoScore === correctAnswerCount
 }
 
-
-
-
-let PlayerTurn = document.querySelector("#turn") as HTMLElement;
-
-function whichPlayerTurn(){
-  let count: number
+function winner(playerOneScore: number, playerTwoScore:number): string{
+  if (playerOneScore > playerTwoScore){
+    return "Player One Won!"
+  } else if (playerOneScore < playerTwoScore){
+    return "Player Two Won!"
+  } else {
+    return "Draw!"
+  }
+  
 }
