@@ -48,7 +48,7 @@ playerTwo.innerText = (`Player Two: ${playerTwoScore}`);
 let playerTurn = document.getElementById("playerTurn") as HTMLElement
 playerTurn.innerText = (`Player One's turn`);
 let isPlayerOneTurn = true; // inferring by te value
-let correctAnswerCount = 0;
+const correctAnswerCount = 12;
 
 
 
@@ -105,11 +105,9 @@ function checkMatch() {
     firstCard.parentElement!.innerHTML = `<img src="src/imgs/check.svg" />`
     secondCard.parentElement!.innerHTML = `<img src="src/imgs/check.svg" />`
     isPlayerOneTurn ? playerOneScore++ : playerTwoScore++;
-    correctAnswerCount++
     if (isTheMatchFinished()){
       alert(winner(playerOneScore, playerTwoScore))
     }
-
   } else {
     firstCard.classList.toggle('hidden');
     secondCard.classList.toggle('hidden');
@@ -123,7 +121,7 @@ function checkMatch() {
 async function fancyRotate(card: HTMLElement){
   for (let i = 0; i <= 360; i+=6){
     card.parentElement!.style.rotate = `${i}deg`;
-    await delay(5)
+    await delay(10)
   }
 }
 
