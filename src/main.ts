@@ -41,8 +41,10 @@ let showCounter = 0;    // counter for showing cards
 let isShowing = false;  // var for keeping track of showing cards
 let playerOne = document.getElementById("playerOne") as HTMLElement
 let playerTwo = document.getElementById("playerTwo") as HTMLElement
-playerOne.innerText = (`Player One: 0`);
-playerTwo.innerText = (`Player Two: 0`);
+let playerOneScore: number = 0;
+let playerTwoScore: number = 0;
+playerOne.innerText = (`Player One: ${playerOneScore}`);
+playerTwo.innerText = (`Player Two: ${playerTwoScore}`);
 let playerTurn = document.getElementById("playerTurn") as HTMLElement
 playerTurn.innerText = (`Player One's turn`);
 let isPlayerOneTurn: boolean = true;
@@ -80,6 +82,8 @@ async function handleClick(id: number) {
   }
   showCounter++;  
   console.log("end of handleClick", isPlayerOneTurn);
+  playerOne.innerText = (`Player One: ${playerOneScore}`);
+  playerTwo.innerText = (`Player Two: ${playerTwoScore}`);
   
 }
 
@@ -96,6 +100,7 @@ function checkMatch() {
   if (Math.abs(firstID - secondID) === 12){
     firstCard.parentElement!.innerHTML = `<img src="src/imgs/check.svg" />`
     secondCard.parentElement!.innerHTML = `<img src="src/imgs/check.svg" />`
+    isPlayerOneTurn ? playerOneScore++ : playerTwoScore++;
 
   } else {
     firstCard.classList.toggle('hidden');
